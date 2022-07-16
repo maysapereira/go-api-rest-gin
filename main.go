@@ -1,10 +1,7 @@
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-)
+import "github.com/maysapereira/go-api-rest-gin/routes"
 
 func main() {
-	r := gin.Default()
-	r.Run()
+	routes.HandleRequests()
 }
