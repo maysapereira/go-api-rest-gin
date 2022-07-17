@@ -11,5 +11,5 @@ func HandleRequests() {
 	r.GET("/alunos/:id", controllers.BuscaAlunoPorID)
 	r.GET("/:nome", controllers.Saudacao)
 	r.POST("/alunos", controllers.CriaNovoAluno)
-	r.Run()
+	r.Run(":5000") //mudei a porta pois a 8080 não estava funcionando
 }
