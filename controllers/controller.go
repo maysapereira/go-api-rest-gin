@@ -28,11 +28,17 @@ func CriaNovoAluno(c *gin.Context) {
 			"error": err.Error()})
 		return
 	}
+
+	if err := models.ValidaDadosDeAluno(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error()})
+		return
+	}
 	database.DB.Create(&aluno)
 	c.JSON(http.StatusOK, aluno)
 }
 
-func BuscaAlunoPorID(c *gin.Context){
+func BuscaAlunoPorID(c *gin.Context) {
 	var aluno models.Aluno
 	id := c.Params.ByName("id")
 	database.DB.First(&aluno, id)
@@ -46,20 +52,26 @@ func BuscaAlunoPorID(c *gin.Context){
 	c.JSON(http.StatusOK, aluno)
 }
 
-func DeletaAluno(c *gin.Context){
+func DeletaAluno(c *gin.Context) {
 	var aluno models.Aluno
 	id := c.Params.ByName("id")
 	database.DB.Delete(&aluno, id)
 	c.JSON(http.StatusOK, gin.H{
-		"data":"Aluno deletado com sucesso"})
+		"data": "Aluno deletado com sucesso"})
 }
 
-func EditaAluno(c *gin.Context){
+func EditaAluno(c *gin.Context) {
 	var aluno models.Aluno
 	id := c.Params.ByName("id")
 	database.DB.First(&aluno, id)
 
-	if err := c.ShouldBindJSON(&aluno); err != nil{
+	if err := c.ShouldBindJSON(&aluno); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error()})
+		return
+	}
+
+	if err := models.ValidaDadosDeAluno(&aluno); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error()})
 		return
@@ -69,7 +81,7 @@ func EditaAluno(c *gin.Context){
 	c.JSON(http.StatusOK, aluno)
 
 }
-func BuscaAlunoPorCPF(c *gin.Context){
+func BuscaAlunoPorCPF(c *gin.Context) {
 	var aluno models.Aluno
 	cpf := c.Param("cpf")
 
@@ -83,5 +95,3 @@ func BuscaAlunoPorCPF(c *gin.Context){
 
 	c.JSON(http.StatusOK, aluno)
 }
-
-
